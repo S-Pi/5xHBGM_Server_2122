@@ -33,12 +33,12 @@ public class HumanName extends Element{
     private String given;
 
     @ElementCollection
-    @CollectionTable(name = "humanname_prefix", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "humanname_prefix", joinColumns = @JoinColumn(name = "hn_id"))
     private List<String> prefix = new ArrayList<>();
 
     @ElementCollection
-    @CollectionTable(name = "humanname_surfix", joinColumns = @JoinColumn(name = "id"))
-    private List<String> surfix = new ArrayList<>();
+    @CollectionTable(name = "humanname_suffix", joinColumns = @JoinColumn(name = "hn_id"))
+    private List<String> suffix = new ArrayList<>();
 
     @Embedded
     private Period period;

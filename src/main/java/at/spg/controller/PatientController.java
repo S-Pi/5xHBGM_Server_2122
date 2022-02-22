@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 import java.net.URI;
 
 @RequestMapping(path = "/api/patient")
@@ -37,8 +38,14 @@ public class PatientController {
     @PostMapping()
     public ResponseEntity<Patient> createPatient(@Valid @RequestBody Patient patient) {
         patient.setId(null); // ensure to create new names
-        var saved = patientRepository.save(patient);
-        return ResponseEntity.created(URI.create("/api/patient/" + saved.getId())).body(saved);
+        //if((patient.getDeceaseDateTime() == null && !patient.getDeceasedBoolean() == null) ||
+        //        (!patient.getDeceaseDateTime() == null && patient.getDeceasedBoolean() null)
+        if(patient.getDeceaseDateTime() == null || patient.getDeceasedBoolean() == null)
+         {
+            var saved = patientRepository.save(patient);
+            return ResponseEntity.created(URI.create("/api/patient/" + saved.getId())).body(saved);
+        }
+        return ResponseEntity.badRequest().body(patient);
     }
 
     // Update a Patient
@@ -49,7 +56,7 @@ public class PatientController {
                 .findById(patientId)
                 .map(
                         patient -> {
-                            patient.setActive(patientDetails.isActive());
+                            patient.setActive(patientDetails.getActive());
                             patient.setGender(patientDetails.getGender());
                             patient.setIdentifier(patientDetails.getIdentifier());
                             patient.setName(patientDetails.getName());

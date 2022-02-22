@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @Builder
+@ToString
 public class Patient extends DomainResource{
 
     //Aufzählung. Nur diese Werte können gespeichert werden.
@@ -31,7 +32,7 @@ public class Patient extends DomainResource{
     private List<Identifier> identifier;
 
     @Column(name="p_active")
-    private boolean active;
+    private Boolean active;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "hn_patient_fk", referencedColumnName = "id")
@@ -54,7 +55,7 @@ public class Patient extends DomainResource{
     //Alternative ? Felder- es wird in der DB beides abgebildet,
     //Im Controller nur 1 erlaubt.
     @Column(name="p_deceasedBoolean")
-    private boolean deceasedBoolean;
+    private Boolean deceasedBoolean;
 
     @Column(name="p_deceasedDateTime")
     private LocalDate deceaseDateTime;

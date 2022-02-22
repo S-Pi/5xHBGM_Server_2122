@@ -13,6 +13,8 @@ INSERT INTO `spengerspital`.`identifier` (`id`, `i_code`, `pp_end`, `pp_start`, 
 INSERT INTO `spengerspital`.`identifier` (`id`, `i_code`, `pp_end`, `pp_start`, `i_system`, `i_value`, `i_codeableconcept_fk`) VALUES ('yxcv', 'usual', '2020-01-01', '2030-01-01', 'http://url.com', '135426865', '123');
 INSERT INTO `spengerspital`.`coding` (`id`, `c_code`, `c_display`, `c_system`, `c_user_selected`, `c_version`, `c_codeableconcept_fk`) VALUES ('asdfg', 'example', 'displayed', 'Windows', True, '1.0.0', '123');
 INSERT INTO `spengerspital`.`human_name` (`id`, `hn_family`, `hn_given`, `pp_end`, `pp_start`, `hn_text`, `hn_use`, `hn_patient_fk`, `hn_practitioner_fk`) VALUES ('n1', 'Mustermann', 'given', '2099-12-31', '2000-01-01', 'blabla', 'usual', '7439re', 'p1');
+INSERT INTO `spengerspital`.`humanname_suffix` (`hn_id`, `suffix`) VALUES ('n1', 'Dr.');
+
 INSERT INTO `spengerspital`.`encounter` (`id`, `pp_end`, `pp_start`, `status`) VALUES ('enc1', '2020-04-15 19:17:45.000000', '2015-04-15 19:17:47.000000', 'arrived');
 INSERT INTO `spengerspital`.`encounter` (`id`, `pp_end`, `pp_start`, `status`) VALUES ('gjuerighirgh', '2020-04-15 19:17:45.000000', '2015-04-15 19:17:47.000000', 'arrived');
 

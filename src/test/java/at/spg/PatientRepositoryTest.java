@@ -1,8 +1,8 @@
 package at.spg;
-
 import at.spg.model.*;
 import at.spg.repository.PatientRepository;
 import org.apache.commons.collections4.CollectionUtils;
+import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +32,8 @@ public class PatientRepositoryTest {
         System.out.println(loadedPatient);
         //4. Vergleich des gespeicherten Objekts mit dem geladenen
 
+
+        Approvals.verifyAll("identifiers",loadedPatient.getIdentifier());
 
         //Alle einfachen Datentypen können mit Equals verglichen werden.
         //Assert prüft, ob die beiden gleich sind. Schlägt ein Assert fehl, ist der Test fehlgeschlagen
@@ -76,7 +78,7 @@ public class PatientRepositoryTest {
         //3. Gespeicherte Daten aus der DB lesen
         Patient loadedPatient = patientRepository.findById(savedP.getId()).get();
         //4. Patient verändern => Alle Attribute
-        loadedPatient.setActive(!loadedPatient.isActive());
+        loadedPatient.setActive(!loadedPatient.getActive());
         loadedPatient.setGender(Patient.GenderCode.female);
 
         Patient changedPatient = patientRepository.save(loadedPatient);

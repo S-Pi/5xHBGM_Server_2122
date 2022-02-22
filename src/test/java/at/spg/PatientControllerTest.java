@@ -106,7 +106,7 @@ public class PatientControllerTest {
         assertNotNull(patient);
 
         //Ein paar Attribute werden geändert
-        patient.setActive(!patient.isActive());
+        patient.setActive(!patient.getActive());
         patient.setGender(Patient.GenderCode.unknown);
 
         String json= null;
