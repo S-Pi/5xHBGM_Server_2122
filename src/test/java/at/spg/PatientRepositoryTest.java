@@ -39,7 +39,7 @@ public class PatientRepositoryTest {
         //Assert prüft, ob die beiden gleich sind. Schlägt ein Assert fehl, ist der Test fehlgeschlagen
         //Asserts sind die eigentlichen "Tests"
         assertEquals(p.getBirthDate(),savedP.getBirthDate());
-        assertEquals(p.getDeceaseDateTime(),savedP.getDeceaseDateTime());
+        assertEquals(p.getDeceasedDateTime(),savedP.getDeceasedDateTime());
         assertEquals(p.getBirthDate(),savedP.getBirthDate());
         assertEquals(p.getText(),savedP.getText());
         assertEquals(p.getGender(),savedP.getGender());
@@ -89,7 +89,7 @@ public class PatientRepositoryTest {
         //Assert prüft, ob die beiden gleich sind. Schlägt ein Assert fehl, ist der Test fehlgeschlagen
         //Asserts sind die eigentlichen "Tests"
         assertEquals(loadedPatient.getBirthDate(),changedPatient.getBirthDate());
-        assertEquals(loadedPatient.getDeceaseDateTime(),changedPatient.getDeceaseDateTime());
+        assertEquals(loadedPatient.getDeceasedDateTime(),changedPatient.getDeceasedDateTime());
         assertEquals(loadedPatient.getBirthDate(),changedPatient.getBirthDate());
         assertEquals(loadedPatient.getText(),changedPatient.getText());
         assertEquals(loadedPatient.getGender(),changedPatient.getGender());
@@ -115,6 +115,7 @@ public class PatientRepositoryTest {
         List<Address> address = new ArrayList<>();
         List<String> prefixes = null;
         List<String> suffixes = null;
+        List<String> givens = new ArrayList<>();
 
         //Ein Coding Objekt wird mit wie bisher mit einem Konstruktor gebaut.
         codings.add(new Coding("System", "0.1.1", "Code", "<div>...<div>", false));
@@ -155,9 +156,10 @@ public class PatientRepositoryTest {
                 //new ContactPoint(ContactPoint.SystemCode.phone, "123454321", ContactPoint.UseCode.home, 1, period2)
         );
 
+        givens.add("Simon");
         names.add(HumanName.builder()
                 .family("Pirker")
-                .given("Simon")
+                .given(givens)
                 .period(Period.builder().start(LocalDateTime.now()).end(LocalDateTime.now()).build())
                 .use(HumanName.UseCode.anonymous)
                 .build());

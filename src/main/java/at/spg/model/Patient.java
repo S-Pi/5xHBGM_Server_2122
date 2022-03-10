@@ -1,13 +1,16 @@
 package at.spg.model;
 
+import at.spg.validators.PatientValid;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.PastOrPresent;
 
 @Entity
 @NoArgsConstructor
@@ -16,6 +19,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
+@PatientValid(message = "Der Patient ist nicht gültig aufgebaut")
+@Table(name= "p_patient")
 public class Patient extends DomainResource{
 
     //Aufzählung. Nur diese Werte können gespeichert werden.
@@ -49,6 +54,7 @@ public class Patient extends DomainResource{
     private GenderCode gender;
 
     //Bei Datum und Zeit immer Local verwenden
+    @PastOrPresent(message = "Du bist noch nicht geboren ... SUS")
     @Column(name="p_birthdate")
     private LocalDate birthDate;
 
@@ -58,7 +64,7 @@ public class Patient extends DomainResource{
     private Boolean deceasedBoolean;
 
     @Column(name="p_deceasedDateTime")
-    private LocalDate deceaseDateTime;
+    private LocalDateTime deceasedDateTime;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "a_patient_fk", referencedColumnName = "id")

@@ -86,6 +86,7 @@ public class PractitionerRepositoryTest {
     }
 
     public static Practitioner returnOnePractitioner(){
+        List<String> givens = new ArrayList<>();
         List<Identifier> identifiers = new ArrayList<>();
         List<HumanName> names = new ArrayList<>();
         List<Address> address = new ArrayList<>();
@@ -100,7 +101,8 @@ public class PractitionerRepositoryTest {
         CodeableConcept ccType = new CodeableConcept(codings, "Text");
         contactPoints.add(new ContactPoint(ContactPoint.SystemCode.phone, "123454321", ContactPoint.UseCode.home, 1, period2));
         identifiers.add(new Identifier(Identifier.UseCode.official,ccType, "System", "value", period));
-        HumanName h1 = HumanName.builder().family("Perkerson").given("Simster").build();
+        givens.add("Simon");
+        HumanName h1 = HumanName.builder().family("Perkerson").given(givens).build();
         names.add(h1);
         cc.add(new CodeableConcept(codings, "CodCoc"));
         qualifications.add(new Qualification(identifiers, new CodeableConcept(codings, "CodCoc"), period2));

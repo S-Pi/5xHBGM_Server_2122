@@ -29,8 +29,9 @@ public class HumanName extends Element{
     @Column(name = "hn_family")
     private String family;
 
-    @Column(name = "hn_given")
-    private String given;
+    @ElementCollection
+    @CollectionTable(name = "humanname_given", joinColumns = @JoinColumn(name = "hn_id"))
+    private List<String> given;
 
     @ElementCollection
     @CollectionTable(name = "humanname_prefix", joinColumns = @JoinColumn(name = "hn_id"))

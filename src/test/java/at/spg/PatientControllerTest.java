@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class PatientControllerTest {
     //andExpect überprüft, ob der zurückgegebene Status 200 (OK) ist.
     @Test
     public void
-    getAllPatients(){
+    getAllPatients() {
         try {
             mockMvc
                     .perform(MockMvcRequestBuilders.get("/api/patient"))
@@ -55,7 +56,7 @@ public class PatientControllerTest {
     //andExpect überprüft, ob der zurückgegebene Status 200 (OK) ist.
     @Test
     public void
-    getAPatient(){
+    getAPatient() {
         try {
             mockMvc
                     .perform(MockMvcRequestBuilders.get("/api/patient/asdf"))
@@ -71,9 +72,9 @@ public class PatientControllerTest {
     //Der erwartete Rückgabecode ist "CREATED" Also 201.
     @Test
     public void
-    postAPatient(){
+    postAPatient() {
         Patient patient = PatientRepositoryTest.returnOnePatient();
-        String json= null;
+        String json = null;
         try {
             json = om.writeValueAsString(patient);
         } catch (JsonProcessingException e) {
@@ -98,7 +99,7 @@ public class PatientControllerTest {
     //Kein 201 CREATED, sonst wäre der Patient neu angelegt worden.
     @Test
     public void
-    putAPatient(){
+    putAPatient() {
         List<Patient> patientList = new ArrayList<Patient>();
         patientRepository.findAll().forEach(patientList::add);
         Patient patient = patientList.get(0);
@@ -109,7 +110,7 @@ public class PatientControllerTest {
         patient.setActive(!patient.getActive());
         patient.setGender(Patient.GenderCode.unknown);
 
-        String json= null;
+        String json = null;
         try {
             json = om.writeValueAsString(patient);
         } catch (JsonProcessingException e) {
@@ -133,7 +134,7 @@ public class PatientControllerTest {
     //Erwartete Antwort ist 200 (OK)
     @Test
     public void
-    deleteAPatient(){
+    deleteAPatient() {
         try {
             mockMvc
                     .perform(MockMvcRequestBuilders.delete("/api/patient/gjuerighirgh"))
@@ -143,4 +144,68 @@ public class PatientControllerTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    @Transactional
+    public void postInvalidDeceasedPatient() {
+        Patient patient = PatientRepositoryTest.returnOnePatient();
+        patient.setDeceasedDateTime(LocalDateTime.now());
+        patient.setDeceasedBoolean(true);
+        String json = null;
+        try {
+            json = om.writeValueAsString(patient);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/patient/").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(json)).andDo(MockMvcResultHandlers.print())
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void putInvalidNarrativePatient() {
+        Patient patient = PatientRepositoryTest.returnOnePatient();
+        Narrative narrative = new Narrative();
+        narrative.setStatus(null);
+        narrative.setDiv(null);
+        patient.setText(narrative);
+        String json = null;
+        try {
+            json = om.writeValueAsString(patient);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/patient").accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON).content(json)).
+                    andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void putInvalidBirthDatePatient() {
+        Patient patient = PatientRepositoryTest.returnOnePatient();
+        patient.setBirthDate(LocalDate.of(2160,01,01));
+        String json = null;
+        try {
+            json = om.writeValueAsString(patient);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/patient").accept(MediaType.APPLICATION_JSON)
+                            .contentType(MediaType.APPLICATION_JSON).content(json)).
+                    andDo(MockMvcResultHandlers.print())
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

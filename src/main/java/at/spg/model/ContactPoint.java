@@ -4,6 +4,7 @@ package at.spg.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Getter
@@ -46,8 +47,9 @@ public class ContactPoint extends Element {
     @Enumerated(EnumType.STRING)
     private UseCode useEnum;
 
+    @Min(1)
     @Column(name = "cp_rank")
-    private int rank;
+    private Integer rank;
 
     @Embedded
     private Period period;
