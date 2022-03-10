@@ -1,0 +1,34 @@
+package at.spengergasse.spengermed.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Table(name="n_narrative")
+public class Narrative extends Element{
+
+    public enum NarrativeCode{
+        generated , extensions , additional , empty
+    }
+
+    @NotNull(message = "Der status von Narrative muss einen Wert haben")
+    @Column(name= "n_status", nullable = false)
+    private NarrativeCode status;
+
+    @NotNull(message = "Das div Attribut von Narrative muss einen Wert haben")
+    @Lob
+    @Column(name="n_div",nullable = false)
+    private String div;
+}
